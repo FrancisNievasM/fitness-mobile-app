@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Obligatorio</title>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+        <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+        <style>
+            #map { height: 680px; }
+        </style>
+    </head>
+    <body>
+        <ion-app>
+            <!-- COMPONENTE DE RUTEO -->
+            <ion-router id="ruteo">
+                <ion-route url="/" component="page-home"></ion-route>
+                <ion-route url="/login" component="page-login"></ion-route>
+                <ion-route url="/registro" component="page-registro"></ion-route>
+                <ion-route url="/registroEjercicio" component="page-registroEjercicio"></ion-route>  
+                <ion-route url="/listadoRegistros" component="page-listadoRegistros"></ion-route>
+                <ion-route url="/informeTiempo" component="page-informeTiempo"></ion-route>      
+                <ion-route url="/mapa" component="page-mapa"></ion-route>              
+            </ion-router>
+            <ion-nav></ion-nav>
+            <!-- FIN -->
+
+
+            <!-- MENU -->
+            <ion-menu side="start" menu-id="first" content-id="main" id="menu">
+                <ion-header>
+                    <ion-toolbar color="primary">
+                        <iont-title class="ion-padding">Menu de inicio</iont-title>
+                    </ion-toolbar>
+                </ion-header>
+    
+                <ion-content>
+                    <ion-list id="menu-opciones">
+
+                    </ion-list>
+                </ion-content>
+            </ion-menu>
+            <div id="main"></div>
+            <!-- FIN -->
+
+
+            <!-- PANTALLAS -->
+            <!-- HOME -->
+            <page-home class="ion-page" id="pantalla-home">
+                <ion-header>
+                   <ion-toolbar>
+                        <ion-buttons slot="start">
+                            <ion-menu-button></ion-menu-button>
+                        </ion-buttons>
+                        <ion-title>HOME</ion-title>
+                   </ion-toolbar>
+                </ion-header>   
+                <ion-content>
+                    <ion-text color="primary">
+                        <h1 class="ion-text-center">Bienvenido a la Aplicación</h1> 
+                    </ion-text>
+                </ion-content>
+            </page-home>
+
+            <!-- LOGIN -->
+            <page-home class="ion-page" id="pantalla-login">
+                <ion-header>
+                   <ion-toolbar>
+                        <ion-buttons slot="start">
+                            <ion-menu-button></ion-menu-button>
+                        </ion-buttons>
+                        <ion-title>LOGIN</ion-title>
+                   </ion-toolbar>
+                </ion-header>   
+                <ion-content>
+                    
+                    <ion-list>
+                        <ion-item>
+                            <ion-input label="Usuario" id="txtLoginUsuario" labelPlacement="floating" placeholder="Usuario"></ion-input>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-input label="Password" type="password" id="txtLoginPassword" labelPlacement="floating" placeholder="Password"></ion-input>
+                        </ion-item>
+
+                        <ion-button expand="full" id="btnLogin">Login</ion-button>
+                        <ion-label id="resultado-login"></ion-label>
+                    </ion-list>
+
+                </ion-content>
+            </page-home>
+
+            <!-- REGISTRO -->
+            <page-home class="ion-page" id="pantalla-registro">
+                <ion-header>
+                   <ion-toolbar>
+                        <ion-buttons slot="start">
+                            <ion-menu-button></ion-menu-button>
+                        </ion-buttons>
+                        <ion-title>REGISTRO</ion-title>
+                   </ion-toolbar>
+                </ion-header>   
+                <ion-content>
+                    <ion-list>
+                        <ion-item>
+                            <ion-input label="Usuario" id="txtRegistroUsuario" labelPlacement="floating" placeholder="Usuario"></ion-input>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-input label="Password" type="password" id="txtRegistroPassword" labelPlacement="floating" placeholder="Password"></ion-input>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-select label="Seleccione un País" id="slcPaises"> </ion-select>
+                        </ion-item>
+                            
+                        <ion-button expand="full" id="btnRegistro">Registrar</ion-button>
+                        <ion-label id="resultado-registro"></ion-label>
+                    </ion-list>
+                </ion-content>
+            </page-home>
+
+            <!-- AGREGAR UN REGISTRO DE EJERCICIO -->
+            <page-home class="ion-page" id="pantalla-registroEjercicios">
+                <ion-header>
+                   <ion-toolbar>
+                        <ion-buttons slot="start">
+                            <ion-menu-button></ion-menu-button>
+                        </ion-buttons>
+                        <ion-title>REGISTRO DE EJERCICIO</ion-title>
+                   </ion-toolbar>
+                </ion-header>   
+                <ion-content>
+
+                    <ion-list>
+
+                        <ion-item>
+                            <ion-select label="Seleccione una Actividad" id="slcActividades"> </ion-select>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-input label="Tiempo" id="txtRegistroEjercicioTiempo" type="number" labelPlacement="floating" placeholder="Tiempo"></ion-input>
+                        </ion-item>
+
+                        <!-- CALENDARIO -->
+                        
+                        <ion-datetime presentation="date" id="txtRegistroEjercicioTiempoFecha"></ion-datetime>
+            
+                        <ion-button expand="full" id="btnRegistroEjercicio">Registrar</ion-button>
+                        <ion-label id="resultado-registroEjercicio"></ion-label>
+                    </ion-list>
+
+                </ion-content>
+            </page-home>
+
+            <!-- LISTADO DE REGISTROS -->
+            <page-home class="ion-page" id="pantalla-listadoRegistros">
+                <ion-header>
+                   <ion-toolbar>
+                        <ion-buttons slot="start">
+                            <ion-menu-button></ion-menu-button>
+                        </ion-buttons>
+                        <ion-title>LISTADO DE REGISTROS</ion-title>
+                   </ion-toolbar>
+                </ion-header>   
+                <ion-content >
+                    <ion-text color="primary">
+                        <h1 class="ion-text-center">Filtrar</h1> 
+                    </ion-text>
+    
+                    <ion-button expand="full" id="btnFiltrarSemana">Ultima Semana</ion-button> 
+                    <ion-button expand="full" id="btnFiltrarMes">Ultimo Mes</ion-button> 
+                    <ion-button expand="full" id="btnFiltrarHistorico">Historico</ion-button> 
+
+                    <ion-div id="listaDeMisRegistros">
+                        
+                    </ion-div>
+                    <ion-item></ion-item>
+                </ion-content>
+            </page-home>
+
+            <!-- INFORME DE TIEMPO -->
+            <page-home class="ion-page" id="pantalla-informeTiempo">
+                <ion-header>
+                   <ion-toolbar>
+                        <ion-buttons slot="start">
+                            <ion-menu-button></ion-menu-button>
+                        </ion-buttons>
+                        <ion-title>INFORME DE TIEMPO</ion-title>
+                   </ion-toolbar>
+                </ion-header>   
+                <ion-content>
+                    <ion-item>
+                    <ion-label id="resultado-Tiempo-Total"></ion-label>
+                </ion-item>
+                    <ion-item>
+                    <ion-label id="resultado-Tiempo-Diario"></ion-label>
+                </ion-item>
+                </ion-content>
+            </page-home>
+
+            <!-- MAPA DE USUARIOS POR PAIS -->
+            <page-home class="ion-page" id="pantalla-mapa">
+                <ion-header>
+                   <ion-toolbar>
+                        <ion-buttons slot="start">
+                            <ion-menu-button></ion-menu-button>
+                        </ion-buttons>
+                        <ion-title>MAPA DE USUARIOS POR PAIS</ion-title>
+                   </ion-toolbar>
+                </ion-header>   
+                <ion-content>
+                    <div id="map"></div> 
+                </ion-content>
+            </page-home>
+            <!-- FIN -->
+        </ion-app>
+        <script src="js/code.js"></script>
+    </body>
+</html>
